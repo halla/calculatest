@@ -1,0 +1,8 @@
+h1 { color: #333; }
+
+p { font-size: 0.8em; font-color: #555; }
+#screen { margin: 40px 50px; }
+#screen td { text-align: right; }
+
+#screen td input { text-align: right; }
+#screen td .placeholder { border-top: 1px solid black; min-height: 30px; }
