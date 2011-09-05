@@ -18,6 +18,7 @@ import scala.util.Random
 import com.google.gwt.user.client.ui.Widget
 import com.google.gwt.user.client.ui.HorizontalPanel
 import com.google.gwt.user.client.ui.VerticalPanel
+import com.google.gwt.user.client.ui.Grid
 
 class Calculatest extends EntryPoint {
   type Multiplication = (Int, Int, Int)
@@ -28,8 +29,7 @@ class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
     RootPanel.get("controls").add(resultRangeSelector)
-    RootPanel.get("screen").add(screen);
-
+    RootPanel.get("screen").add(screen);    
     setRange(4 to 100)
     next()
   }
@@ -61,7 +61,18 @@ class Calculatest extends EntryPoint {
   }
 
   def buildWidget(task: Multiplication) = {
+    
+    val base = new HorizontalPanel
     val panel = new VerticalPanel
+    panel.setStylePrimaryName("assignment")
+    val tb = new TextBox
+    
+    def checkResult() {
+    	val res = tb.getValue().toInt
+        if (res == task._3) next()
+    
+    }
+    
     task match {
       case (x, y, z) => {
         panel.add(new Label(y.toString))
@@ -69,12 +80,10 @@ class Calculatest extends EntryPoint {
         val placeholder = new Label(" ")
         placeholder.setStylePrimaryName("placeholder")
         panel.add(placeholder)
-        val tb = new TextBox
         tb.setVisibleLength(5)
         tb.addKeyPressHandler((e: KeyPressEvent) => {
           if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-            val res = tb.getValue().toInt
-            if (res == z) next()
+            checkResult()
           }
         })
         panel.add(tb)
@@ -86,7 +95,38 @@ class Calculatest extends EntryPoint {
       }
     }
 
-    panel
+    val numpad: Widget = {
+	    val g = new Grid(4,3)
+	    g.setStylePrimaryName("numpad")
+	    val clear = new Button("c", (_: ClickEvent) => {
+	      val txt = tb.getValue
+	      tb.setValue( txt.take(txt.length-1))
+	    })  
+	    val enter = new Button("=", (_: ClickEvent) => checkResult())
+	    def padbutton(n: Int) =
+	    	new Button(n.toString(), (_: ClickEvent) => tb.setValue(tb.getValue + n.toString()))
+	    
+	    g.setWidget(0, 0, padbutton(7));
+	    g.setWidget(0, 1, padbutton(8));
+	    g.setWidget(0, 2, padbutton(9));
+	    g.setWidget(1, 0, padbutton(4));
+	    g.setWidget(1, 1, padbutton(5));
+	    g.setWidget(1, 2, padbutton(6));
+	    g.setWidget(2, 0, padbutton(1));
+	    g.setWidget(2, 1, padbutton(2));
+	    g.setWidget(2, 2, padbutton(3));
+	    g.setWidget(3, 0, padbutton(0));
+	    g.setWidget(3, 1, enter);
+	    g.setWidget(3, 2, clear);
+	    g 
+	  }
+	
+    val opLabel = new Label("*")
+    opLabel.setStylePrimaryName("oplabel")
+    base add(opLabel)
+    base add(panel)
+    base add numpad
+    base
   }
 
   implicit def clickHandler(f: ClickEvent => Unit): ClickHandler = new ClickHandler {
@@ -97,7 +137,8 @@ class Calculatest extends EntryPoint {
     new KeyPressHandler {
       def onKeyPress(event: KeyPressEvent): Unit = fn(event)
     }
-
+  
+  
 }
 
 object MyMath {
