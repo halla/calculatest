@@ -10,6 +10,7 @@
 			<include name="scala-library.jar" />
 			<include name="specs2-scalaz-core_2.9.1-6.0.1.jar" />
 			<include name="specs2_2.9.1-1.6.1.jar" />
+			<include name="junit-dep-4.9.jar" />
 		</fileset>
 	</path>
 
