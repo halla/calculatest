@@ -22,11 +22,10 @@ class CalculatestSpec extends SpecificationWithJUnit {
     }
     "not contain primes as result-values" in {
       val factors: List[(Int, Int, Int)] = MyMath.factorsByResultRange(0 to 100)
-      (factors forall { a => isPrime(a._3) }) must beFalse
+      (factors forall { a => MyMath.isPrime(a._3) }) must beFalse
     }
   }
   
-  def isPrime(n: Int): Boolean =
-    if (n < 4) true else (2 to n) forall { n % _ != 0 }
+
     
 }

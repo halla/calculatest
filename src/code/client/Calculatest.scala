@@ -147,12 +147,14 @@ object MyMath {
 
   def factorsByResultRange(range: Range): List[(Int, Int, Int)] =
     (for (
-      x <- 2 to range.end / 2;
+      x <- 2 to Math.sqrt(range.end).intValue();
       y <- 2 to range.end / 2;
       z <- range.start to range.end;
       if (x <= y && x * y == z)
     ) yield (x, y, z)).toList
-
+    
+  def isPrime(n: Int): Boolean =
+    if (n < 4) true else (2 to n) forall { n % _ != 0 }
 }
 
 
@@ -161,8 +163,33 @@ object MyMath {
 object main {
 	import MyMath._
 	def main(args: Array[String]): Unit = {
-			println(randomize(factorsByResultRange(4 to 100)))
-			println(randomize(factorsByResultRange(101 to 200)))
+	  var start = System.currentTimeMillis()
+	  var now = start
+
+	  println(randomize(factorsByResultRange(4 to 100)))
+	  now = System.currentTimeMillis()
+	  println(now - start);
+	  start = now	  
+      println(randomize(factorsByResultRange(101 to 200)))
+	  now = System.currentTimeMillis()
+	  println(now - start);
+	  
+ 	  start = now	  
+      println(randomize(factorsByResultRange(401 to 500)))
+	  now = System.currentTimeMillis()
+	  println(now - start);
+
+   	  start = now	  
+      println(randomize(factorsByResultRange(901 to 1000)))
+	  now = System.currentTimeMillis()
+	  println(now - start);
+   	  
+	  start = now	  
+      println(randomize(factorsByResultRange(2001 to 2100)))
+	  now = System.currentTimeMillis()
+	  println(now - start);
+
+
 	}
 	
 }
