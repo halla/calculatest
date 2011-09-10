@@ -12,12 +12,14 @@ import MyMath._
 import PimpMyGwt._
 import com.google.gwt.core.client.Scheduler
 import com.google.gwt.event.dom.client.KeyCodes
+import com.google.gwt.user.client.ui.Composite
 
 /**
  *
  */
-class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Widget with NumpadTarget {
+class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Composite with NumpadTarget {
   val base = new HorizontalPanel
+  initWidget(base)
   val panel = new VerticalPanel
   panel.setStylePrimaryName("assignment")
   val tb = new TextBox
@@ -38,7 +40,7 @@ class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Widget wi
       panel.add(tb)
       Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
         def execute() {
-          tb.setFocus(true);
+          tb.setFocus(true)
         }
       })
     }
@@ -50,12 +52,14 @@ class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Widget wi
   base add (opLabel)
   base add (panel)
   base add numpad
-  base
 
   def handleCmd(cmd: NumpadCmd) {
     cmd match {
       case Num(n) => tb.setValue(tb.getValue + n.toString())
-      case Clear() => val txt = tb.getValue; tb.setValue(txt.take(txt.length - 1))
+      case Clear() => {
+        val txt = tb.getValue
+        tb.setValue(txt.take(txt.length - 1))
+      }
       case Enter() => handler.handleAnswer(task, tb.getValue().toInt)
     }
   }
@@ -64,7 +68,7 @@ class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Widget wi
 /**
  *
  */
-class Numpad(target: NumpadTarget) extends Widget {
+class Numpad(target: NumpadTarget) extends Composite {
 
   val g = new Grid(4, 3)
   g.setStylePrimaryName("numpad")
@@ -76,22 +80,22 @@ class Numpad(target: NumpadTarget) extends Widget {
   def padbutton(n: Int) =
     new Button(n.toString(), (_: ClickEvent) => target.handleCmd(Num(n)))
 
-  g.setWidget(0, 0, padbutton(7));
-  g.setWidget(0, 1, padbutton(8));
-  g.setWidget(0, 2, padbutton(9));
-  g.setWidget(1, 0, padbutton(4));
-  g.setWidget(1, 1, padbutton(5));
-  g.setWidget(1, 2, padbutton(6));
-  g.setWidget(2, 0, padbutton(1));
-  g.setWidget(2, 1, padbutton(2));
-  g.setWidget(2, 2, padbutton(3));
-  g.setWidget(3, 0, padbutton(0));
-  g.setWidget(3, 1, enter);
-  g.setWidget(3, 2, clear);
-  g
+  g.setWidget(0, 0, padbutton(7))
+  g.setWidget(0, 1, padbutton(8))
+  g.setWidget(0, 2, padbutton(9))
+  g.setWidget(1, 0, padbutton(4))
+  g.setWidget(1, 1, padbutton(5))
+  g.setWidget(1, 2, padbutton(6))
+  g.setWidget(2, 0, padbutton(1))
+  g.setWidget(2, 1, padbutton(2))
+  g.setWidget(2, 2, padbutton(3))
+  g.setWidget(3, 0, padbutton(0))
+  g.setWidget(3, 1, enter)
+  g.setWidget(3, 2, clear)
+  initWidget(g)
 }
 
-class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Widget {
+class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite {
   val panel = new HorizontalPanel
   panel.add(selectorButton(4 to 100))
   panel.add(selectorButton(101 to 200))
@@ -103,5 +107,5 @@ class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Widget {
   def selectorButton(range: Range): Widget =
     new Button(range.start + "-" + range.end, (_: ClickEvent) => {})
 
-  panel
+  initWidget(panel)
 }
