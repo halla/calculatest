@@ -105,7 +105,7 @@ class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite
   panel.add(selectorButton(501 to 600))
 
   def selectorButton(range: Range): Widget =
-    new Button(range.start + "-" + range.end, (_: ClickEvent) => {})
+    new Button(range.start + "-" + range.end, (_: ClickEvent) => { handler.handleResultRangeSelect(range)})
 
   initWidget(panel)
 }

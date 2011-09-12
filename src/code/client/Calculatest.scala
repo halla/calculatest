@@ -33,16 +33,25 @@ class App extends AnswerHandler
 
   val resultRangeSelector = new ResultRangeSelector(this)
 
-  var range: Range = _
-  var factors: List[Multiplication] = _
-  def setRange(range: Range) {
-    this.range = range
-    this.factors = MyMath.randomize(factorsByResultRange(range))
+  var range: List[Int] = Nil
+  var factors: List[Multiplication] = Nil
+  
+  def setRange(range: Range) { 
+    this.range = randomize(range.toList)
+    this.factors = Nil
+    setNextFactors()
+  }
+  
+  def setNextFactors() {
+    factors = randomize(factors ++ factorize(range.head)) //otherwise results tend to group
+    range = range.tail
+    if (factors == Nil) setNextFactors()     
   }
 
   def next() {
     screen.setWidget(new CalcWidget(factors.head, this))
-    factors = factors.tail
+    if (factors != Nil) factors = factors.tail
+    setNextFactors()
   }
 
   def handleAnswer(task: Multiplication, answer: Int) =
@@ -85,6 +94,20 @@ object main {
     println(randomize(factorsByResultRange(2001 to 2100)))
     now = System.currentTimeMillis()
     println(now - start)
+    
+    start = now
+    val fs = factors((1 to 100).toList)
+    println(fs)
+    fs foreach { m:(Int, Int, Int) => println(m._1 * m._2 == m._3 ) }
+    now = System.currentTimeMillis()
+    println(now - start)
+
+    start = now
+    println(randomize(factors((2001 to 2100).toList)))
+    now = System.currentTimeMillis()
+    println(now - start)
+    
+    println(randomize( Nil ++ List(1)))
   }
 
 }
