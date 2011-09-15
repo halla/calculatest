@@ -72,6 +72,8 @@ object main {
     var start = System.currentTimeMillis()
     var now = start
 
+    val ranges = new Range(2, 1000, 100)
+    ranges foreach (a => println(factorsByResultRange(a to (a+100)).size)) 
     println(randomize(factorsByResultRange(4 to 100)))
     now = System.currentTimeMillis()
     println(now - start)

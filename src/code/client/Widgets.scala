@@ -97,12 +97,8 @@ class Numpad(target: NumpadTarget) extends Composite {
 
 class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite {
   val panel = new HorizontalPanel
-  panel.add(selectorButton(4 to 100))
-  panel.add(selectorButton(101 to 200))
-  panel.add(selectorButton(201 to 300))
-  panel.add(selectorButton(301 to 400))
-  panel.add(selectorButton(401 to 500))
-  panel.add(selectorButton(501 to 600))
+  val ranges = new Range(1, 600, 50).toList
+  ranges foreach (a => panel.add(selectorButton(a to a+50)))
 
   def selectorButton(range: Range): Widget =
     new Button(range.start + "-" + range.end, (_: ClickEvent) => { handler.handleResultRangeSelect(range)})
