@@ -15,58 +15,60 @@ import com.google.gwt.event.dom.client.KeyCodes
 import com.google.gwt.user.client.ui.Composite
 
 /**
- *
+ * CalcWidget contains the whole thing inside of it.
  */
 class CalcWidget(task: Multiplication, handler: AnswerHandler) extends Composite with NumpadTarget {
   val base = new HorizontalPanel
   initWidget(base)
-  val panel = new VerticalPanel
-  panel.setStylePrimaryName("assignment")
-  val tb = new TextBox
+  val answerField = new TextBox
 
-  task match {
-    case (x, y, z) => {
-      panel.add(new Label(y.toString))
-      panel.add(new Label(x.toString))
-      val placeholder = new Label(" ")
-      placeholder.setStylePrimaryName("placeholder")
-      panel.add(placeholder)
-      tb.setVisibleLength(5)
-      tb.addKeyPressHandler((e: KeyPressEvent) => {
-        if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-          handler.handleAnswer(task, tb.getValue().toInt)
-        }
-      })
-      panel.add(tb)
-      Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
-        def execute() {
-          tb.setFocus(true)
-        }
-      })
+  val taskPanel = {
+    val panel = new VerticalPanel
+    panel.setStylePrimaryName("assignment")
+    task match {
+		case (x, y, z) => {
+	    	panel.add(new Label(y.toString))
+	    	panel.add(new Label(x.toString))
+	    	val placeholder = new Label(" ")
+	    	placeholder.setStylePrimaryName("placeholder")
+	    	panel.add(placeholder)
+	    	answerField.setVisibleLength(5)
+	    	answerField.addKeyPressHandler((e: KeyPressEvent) => {
+	    		if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+	    			handler.handleAnswer(task, answerField.getValue().toInt)
+	    		}
+	    	})
+	    	panel.add(answerField)
+	    	Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
+	    		def execute() {
+	    			answerField.setFocus(true)
+	    		}
+	    	})
+	    } 	
     }
+    panel
   }
-
   val numpad = new Numpad(this)
   val opLabel = new Label("*")
   opLabel.setStylePrimaryName("oplabel")
   base add (opLabel)
-  base add (panel)
+  base add (taskPanel)
   base add numpad
 
   def handleCmd(cmd: NumpadCmd) {
     cmd match {
-      case Num(n) => tb.setValue(tb.getValue + n.toString())
+      case Num(n) => answerField.setValue(answerField.getValue + n.toString())
       case Clear() => {
-        val txt = tb.getValue
-        tb.setValue(txt.take(txt.length - 1))
+        val txt = answerField.getValue
+        answerField.setValue(txt.take(txt.length - 1))
       }
-      case Enter() => handler.handleAnswer(task, tb.getValue().toInt)
+      case Enter() => handler.handleAnswer(task, answerField.getValue().toInt)
     }
   }
 }
 
 /**
- *
+ * On-screen numpad for handheld input.
  */
 class Numpad(target: NumpadTarget) extends Composite {
 
