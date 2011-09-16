@@ -34,7 +34,7 @@ class App extends AnswerHandler
   val resultRangeSelector = new ResultRangeSelector(this)
 
   var range: List[Int] = Nil
-  var factors: List[Multiplication] = Nil
+  var factors: List[BinaryOp] = Nil
   
   def setRange(range: Range) { 
     this.range = randomize(range.toList)
@@ -43,7 +43,7 @@ class App extends AnswerHandler
   }
   
   def setNextFactors() {
-    factors = randomize(factors ++ factorize(range.head)) //otherwise results tend to group
+    factors = randomize(factors ++ factorize(range.head).map(pairToBinop)) //otherwise results tend to group
     range = range.tail
     if (factors == Nil) setNextFactors()     
   }
@@ -54,17 +54,19 @@ class App extends AnswerHandler
     setNextFactors()
   }
 
-  def handleAnswer(task: Multiplication, answer: Int) =
-    if (answer == task._3) next()
+  def handleAnswer(task: BinaryOp, answer: Int) =
+    if (answer == task.result) next()
 
   def handleResultRangeSelect(range: Range) = {
     setRange(range)
     next()
   }
 
+  def pairToBinop(pair: Pair[Int, Int]): BinaryOp = new Multiplication(pair._1, pair._2) 
   def getWidget = screen
 
 }
+
 
 object main {
   import MyMath._
@@ -99,8 +101,7 @@ object main {
     
     start = now
     val fs = factors((1 to 100).toList)
-    println(fs)
-    fs foreach { m:(Int, Int, Int) => println(m._1 * m._2 == m._3 ) }
+    println(fs)    
     now = System.currentTimeMillis()
     println(now - start)
 
