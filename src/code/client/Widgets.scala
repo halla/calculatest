@@ -19,13 +19,14 @@ import com.google.gwt.user.client.ui.Composite
  */
 class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with NumpadTarget {
   val base = new HorizontalPanel
+  val answerField = buildAnswerField()
   initWidget(base)
 
   val taskPanel = {
     val panel = new VerticalPanel
     panel.setStylePrimaryName("assignment")
     panel.add(opWidget(task))    
-	panel.add(answerField())
+	panel.add(answerField)
 	panel
   }
   val numpad = new Numpad(this)
@@ -35,7 +36,7 @@ class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with Numpad
   base add (taskPanel)
   base add numpad
   
-  def answerField() = {
+  def buildAnswerField() = {
   	val answerField = new TextBox
 	answerField.setVisibleLength(5)
 	answerField.addKeyPressHandler((e: KeyPressEvent) => {
