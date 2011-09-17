@@ -35,21 +35,30 @@ object MyMath {
 
   def isPrime(n: Int): Boolean =
     if (n < 4) true else (2 to n) forall { n % _ != 0 }
+  
+  def randomNumberByLength(length: Int) = {
+    (Random.nextInt(9) + 1)*10^length +
+    List.fill(length-1)(Random.nextInt(10)).foldLeft(0)(_*10 + _)
+  }
+  
 }
 
 trait Op {
-  def result
+  def result: Int
 }
 
 trait BinaryOp extends Op {
   val left: Int
   val right: Int
+  def opString: String
 }
 
-class Multiplication(left: Int, right: Int) extends BinaryOp {
-  def result = left * right  
+class Multiplication(val left: Int, val right: Int) extends BinaryOp {
+  def result = left * right 
+  def opString = "*"
 }
 
-class Addition(left: Int, right: Int) extends BinaryOp {
+class Addition(val left: Int, val right: Int) extends BinaryOp {
   def result = left + right
+  def opString = "+"
 }

@@ -10,6 +10,10 @@ trait ResultRangeSelectorHandler {
   def handleResultRangeSelect(range: Range)
 }
 
+trait DimensionSelectorHandler {
+  def handleDimensionSelect(dimension: (Int, Int))
+}
+
 sealed trait NumpadCmd
 case class Num(n: Int) extends NumpadCmd
 case class Clear() extends NumpadCmd

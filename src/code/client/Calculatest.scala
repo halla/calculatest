@@ -22,6 +22,10 @@ class Calculatest extends EntryPoint {
     RootPanel.get("screen").add(app.getWidget) 
     app.setRange(4 to 100)
     app.next()
+    val addApp = new AdditionApp
+    addApp.next()
+    RootPanel.get("screen").add(addApp.dimensionSelector)
+    RootPanel.get("screen").add(addApp.screen)
   }
 
 }
@@ -34,23 +38,23 @@ class App extends AnswerHandler
   val resultRangeSelector = new ResultRangeSelector(this)
 
   var range: List[Int] = Nil
-  var factors: List[BinaryOp] = Nil
+  var tasks: List[BinaryOp] = Nil
   
   def setRange(range: Range) { 
     this.range = randomize(range.toList)
-    this.factors = Nil
+    this.tasks = Nil
     setNextFactors()
   }
   
   def setNextFactors() {
-    factors = randomize(factors ++ factorize(range.head).map(pairToBinop)) //otherwise results tend to group
+    tasks = randomize(tasks ++ factorize(range.head).map(pairToBinop)) //otherwise results tend to group
     range = range.tail
-    if (factors == Nil) setNextFactors()     
+    if (tasks == Nil) setNextFactors()     
   }
 
   def next() {
-    screen.setWidget(new CalcWidget(factors.head, this))
-    if (factors != Nil) factors = factors.tail
+    screen.setWidget(new CalcWidget(tasks.head, this))
+    if (tasks != Nil) tasks = tasks.tail
     setNextFactors()
   }
 
@@ -67,6 +71,36 @@ class App extends AnswerHandler
 
 }
 
+class AdditionApp extends AnswerHandler 
+	with DimensionSelectorHandler {
+  val screen = new SimplePanel
+  var tasks: List[BinaryOp] = genTasks(50, (2,2))
+  val dimensionSelector = new DimensionSelector(this)  
+  
+  def next() {
+    screen.setWidget(new CalcWidget(tasks.head, this))
+    if (tasks != Nil) tasks = tasks.tail
+    prepareNextTask()
+  }
+  
+  def genTasks(n: Int, dimension: (Int, Int)) = 
+    List.fill(n)(new Addition(randomNumberByLength(dimension._2), randomNumberByLength(dimension._2)))
+    
+  def setDimension(dimension: (Int, Int)) {
+    tasks = genTasks(50, dimension)
+  }
+  def prepareNextTask() {
+    //tasks = new Addition(randomNumberByLength(2), randomNumberByLength(2)) :: tasks  
+  }
+
+  def handleAnswer(task: BinaryOp, answer: Int) =
+    if (answer == task.result) next()
+  
+  def handleDimensionSelect(dimension: (Int, Int)) {
+    	setDimension(dimension)
+    	next()
+  }
+}
 
 object main {
   import MyMath._

@@ -45,7 +45,7 @@ class CalcWidget(task: BinaryOp, handler: AnswerHandler) extends Composite with 
 	panel
   }
   val numpad = new Numpad(this)
-  val opLabel = new Label("*")
+  val opLabel = new Label(task.opString)
   opLabel.setStylePrimaryName("oplabel")
   base add (opLabel)
   base add (taskPanel)
@@ -100,6 +100,20 @@ class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite
 
   def selectorButton(range: Range): Widget =
     new Button(range.start + "-" + range.end, (_: ClickEvent) => { handler.handleResultRangeSelect(range)})
+
+  initWidget(panel)
+}
+
+class DimensionSelector(handler: DimensionSelectorHandler) extends Composite {
+  type Dimension = (Int, Int)
+  val panel = new HorizontalPanel
+  val dimensions: List[Dimension] = (for(
+      n <- 2 to 5;
+      length <- 1 to 5) yield (n,length)).toList
+  dimensions foreach (a => panel.add(selectorButton(a)))
+
+  def selectorButton(dimension: Dimension): Widget =
+    new Button(dimension._1 + "x" + dimension._2, (_: ClickEvent) => { handler.handleDimensionSelect(dimension)})
 
   initWidget(panel)
 }
