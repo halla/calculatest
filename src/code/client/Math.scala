@@ -36,9 +36,9 @@ object MyMath {
   def isPrime(n: Int): Boolean =
     if (n < 4) true else (2 to n) forall { n % _ != 0 }
   
-  def randomNumberByLength(length: Int) = {
-    (Random.nextInt(9) + 1)*10^length +
-    List.fill(length-1)(Random.nextInt(10)).foldLeft(0)(_*10 + _)
+  def randomNumberByLength(length: Int): Int = {
+    (Random.nextInt(9) + 1) * Math.pow(10,(length -1)).toInt +
+    	List.fill(length-1)(Random.nextInt(10)).foldLeft(0)(_*10 + _)
   }
   
 }

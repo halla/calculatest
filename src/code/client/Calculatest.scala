@@ -145,6 +145,7 @@ object main {
     println(now - start)
     
     println(randomize( Nil ++ List(1)))
+        
   }
 
 }

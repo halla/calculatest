@@ -43,6 +43,15 @@ class CalculatestSpec extends SpecificationWithJUnit {
       factors forall ( m => m._1 * m._2 must_== m._3 ) must_== beTrue
     }*/ //TODO 
   }
+  
+  "randomNumByLength" should {
+    "return numbers with matching string length" in {
+      val lengths = 1 to 10
+      val nums = for (n <- lengths) yield (n, randomNumberByLength(n).toString.length)
+      val expected = lengths.toList.zip(lengths)
+      expected must_== nums.toList
+    }
+  }
 
     
 }
