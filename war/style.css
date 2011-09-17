@@ -14,7 +14,7 @@ p { font-size: 0.8em; font-color: #777; }
 #screen td input { text-align: right; font-size: 1.1em; }
 #screen td .placeholder { border-top: 1px solid black; min-height: 30px; }
 
-
+.opPanel { width: 100%; }
 .assignment { padding: 3px 5px; }
 .numpad { border: 1px solid #eee; padding: 3px 5px; margin-left: 10px; border-spacing: 0; }
 .oplabel { padding-top: 25px;}

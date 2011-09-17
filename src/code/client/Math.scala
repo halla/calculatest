@@ -44,13 +44,18 @@ object MyMath {
 }
 
 trait Op {
-  def result: Int
+  def result: Int  
+  val operands: List[Int]
+  def opString: String
 }
 
-trait BinaryOp extends Op {
+trait ListOp extends Op {
+}
+
+trait BinaryOp extends Op {  
   val left: Int
   val right: Int
-  def opString: String
+  val operands = List(left, right)
 }
 
 class Multiplication(val left: Int, val right: Int) extends BinaryOp {
@@ -61,4 +66,9 @@ class Multiplication(val left: Int, val right: Int) extends BinaryOp {
 class Addition(val left: Int, val right: Int) extends BinaryOp {
   def result = left + right
   def opString = "+"
+}
+
+class AdditionList(val operands: List[Int]) extends ListOp {
+  def opString = "+"
+  def result = operands.foldLeft(0)(_+_)
 }

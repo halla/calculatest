@@ -58,7 +58,7 @@ class App extends AnswerHandler
     setNextFactors()
   }
 
-  def handleAnswer(task: BinaryOp, answer: Int) =
+  def handleAnswer(task: Op, answer: Int) =
     if (answer == task.result) next()
 
   def handleResultRangeSelect(range: Range) = {
@@ -74,7 +74,7 @@ class App extends AnswerHandler
 class AdditionApp extends AnswerHandler 
 	with DimensionSelectorHandler {
   val screen = new SimplePanel
-  var tasks: List[BinaryOp] = genTasks(50, (2,2))
+  var tasks: List[Op] = genTasks(50, (2,2))
   val dimensionSelector = new DimensionSelector(this)  
   
   def next() {
@@ -83,9 +83,11 @@ class AdditionApp extends AnswerHandler
     prepareNextTask()
   }
   
-  def genTasks(n: Int, dimension: (Int, Int)) = 
-    List.fill(n)(new Addition(randomNumberByLength(dimension._2), randomNumberByLength(dimension._2)))
-    
+  def genTasks(n: Int, dimension: (Int, Int)): List[Op] = {
+    def genOperands = List.fill(dimension._1)(randomNumberByLength(dimension._2))
+    List.fill(n)(new AdditionList(genOperands))
+  }
+  
   def setDimension(dimension: (Int, Int)) {
     tasks = genTasks(50, dimension)
   }
@@ -93,7 +95,7 @@ class AdditionApp extends AnswerHandler
     //tasks = new Addition(randomNumberByLength(2), randomNumberByLength(2)) :: tasks  
   }
 
-  def handleAnswer(task: BinaryOp, answer: Int) =
+  def handleAnswer(task: Op, answer: Int) =
     if (answer == task.result) next()
   
   def handleDimensionSelect(dimension: (Int, Int)) {

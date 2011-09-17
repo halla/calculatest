@@ -3,7 +3,7 @@ package code.client
 import MyMath._
 
 trait AnswerHandler {
-  def handleAnswer(question: BinaryOp, answer: Int)
+  def handleAnswer(question: Op, answer: Int)
 }
 
 trait ResultRangeSelectorHandler {

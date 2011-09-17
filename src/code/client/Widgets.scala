@@ -17,31 +17,15 @@ import com.google.gwt.user.client.ui.Composite
 /**
  * CalcWidget contains the whole thing inside of it.
  */
-class CalcWidget(task: BinaryOp, handler: AnswerHandler) extends Composite with NumpadTarget {
+class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with NumpadTarget {
   val base = new HorizontalPanel
   initWidget(base)
-  val answerField = new TextBox
 
   val taskPanel = {
     val panel = new VerticalPanel
     panel.setStylePrimaryName("assignment")
-	panel.add(new Label(task.left.toString))
-	panel.add(new Label(task.right.toString))
-	val placeholder = new Label(" ")
-	placeholder.setStylePrimaryName("placeholder")
-	panel.add(placeholder)
-	answerField.setVisibleLength(5)
-	answerField.addKeyPressHandler((e: KeyPressEvent) => {
-		if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-			handler.handleAnswer(task, answerField.getValue().toInt)
-		}
-	})
-	panel.add(answerField)
-	Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
-		def execute() {
-			answerField.setFocus(true)
-		}
-	})
+    panel.add(opWidget(task))    
+	panel.add(answerField())
 	panel
   }
   val numpad = new Numpad(this)
@@ -50,7 +34,33 @@ class CalcWidget(task: BinaryOp, handler: AnswerHandler) extends Composite with 
   base add (opLabel)
   base add (taskPanel)
   base add numpad
+  
+  def answerField() = {
+  	val answerField = new TextBox
+	answerField.setVisibleLength(5)
+	answerField.addKeyPressHandler((e: KeyPressEvent) => {
+		if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+			handler.handleAnswer(task, answerField.getValue().toInt)
+		}
+	})
+	Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
+		def execute() {
+			answerField.setFocus(true)
+		}
+	})
+    answerField
+  }
 
+  def opWidget(op: Op) = {
+    val panel = new VerticalPanel
+    panel.setStylePrimaryName("opPanel")
+    op.operands.foreach(o => panel.add(new Label(o.toString)))    	
+	val placeholder = new Label(" ")
+	placeholder.setStylePrimaryName("placeholder")
+	panel.add(placeholder)
+	panel
+  }
+    
   def handleCmd(cmd: NumpadCmd) {
     cmd match {
       case Num(n) => answerField.setValue(answerField.getValue + n.toString())
