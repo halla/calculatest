@@ -3,6 +3,9 @@ package code.client
 import org.specs2.mutable._
 import org.junit.runner._
 import MyMath._
+import org.easymock.EasyMock._
+import com.google.gwt.user.client.ui.TextBox
+import com.google.gwt.user.client.ui.HasValue
 
 @RunWith(classOf[org.specs2.runner.JUnitRunner])
 class CalculatestSpec extends SpecificationWithJUnit {
@@ -53,5 +56,14 @@ class CalculatestSpec extends SpecificationWithJUnit {
     }
   }
 
+  "numpad click" should {    
+    "result in numpadcmd" in {
+      val target = createMock(classOf[HasValue[String]])
+      val appView = createMock(classOf[AppView])
+      val app = new AdditionApp(appView)
+      //val numpad = createStrictMock(classOf[NumpadBridge]) //new NumpadBridge(target)
+      0 must_== 1
+    }
+  }
     
 }

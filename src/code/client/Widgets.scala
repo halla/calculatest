@@ -13,11 +13,25 @@ import PimpMyGwt._
 import com.google.gwt.core.client.Scheduler
 import com.google.gwt.event.dom.client.KeyCodes
 import com.google.gwt.user.client.ui.Composite
+import com.google.gwt.dom.client.NativeEvent
+import com.google.gwt.event.dom.client.DomEvent
+import com.google.gwt.dom.client.Document
+import com.google.gwt.user.client.ui.SimplePanel
+
+
+class AppView extends AppDisplay {
+  val screen = new SimplePanel
+  val widget = screen
+}
+
 
 /**
  * CalcWidget contains the whole thing inside of it.
  */
-class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with NumpadTarget {
+class CalcWidget(task: Op) 
+	extends Composite
+	with TaskDisplay
+	{
   val base = new HorizontalPanel
   val answerField = buildAnswerField()
   initWidget(base)
@@ -29,21 +43,16 @@ class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with Numpad
 	panel.add(answerField)
 	panel
   }
-  val numpad = new Numpad(this)
+
   val opLabel = new Label(task.opString)
   opLabel.setStylePrimaryName("oplabel")
   base add (opLabel)
-  base add (taskPanel)
-  base add numpad
+  base add (taskPanel)  
   
   def buildAnswerField() = {
   	val answerField = new TextBox
 	answerField.setVisibleLength(5)
-	answerField.addKeyPressHandler((e: KeyPressEvent) => {
-		if (e.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-			handler.handleAnswer(task, answerField.getValue().toInt)
-		}
-	})
+	
 	Scheduler.get.scheduleDeferred(new Scheduler.ScheduledCommand() {
 		def execute() {
 			answerField.setFocus(true)
@@ -61,33 +70,41 @@ class CalcWidget(task: Op, handler: AnswerHandler) extends Composite with Numpad
 	panel.add(placeholder)
 	panel
   }
-    
-  def handleCmd(cmd: NumpadCmd) {
-    cmd match {
-      case Num(n) => answerField.setValue(answerField.getValue + n.toString())
-      case Clear() => {
-        val txt = answerField.getValue
-        answerField.setValue(txt.take(txt.length - 1))
-      }
-      case Enter() => handler.handleAnswer(task, answerField.getValue().toInt)
-    }
-  }
+      
+}
+
+trait NumpadDisplay {
+  var target: Option[NumpadHandler]
 }
 
 /**
  * On-screen numpad for handheld input.
  */
-class Numpad(target: NumpadTarget) extends Composite {
-
+class Numpad extends Composite with NumpadDisplay {
+  var target: Option[NumpadHandler] = None
+  
   val g = new Grid(4, 3)
   g.setStylePrimaryName("numpad")
-  val clear = new Button("c", (_: ClickEvent) => {
-    target.handleCmd(Clear())
-
+  val clear = new Button("c", (_: ClickEvent) => {    
+    target match {
+      case Some(t) => t.handleCmd(Clear())  
+      case None =>
+    }
   })
-  val enter = new Button("=", (_: ClickEvent) => target.handleCmd(Enter()))
+  
+  val enter = new Button("=", (_: ClickEvent) => {
+    target match {
+      case Some(t) => t.handleCmd(Enter())
+      case None =>
+    }    
+  })
   def padbutton(n: Int) =
-    new Button(n.toString(), (_: ClickEvent) => target.handleCmd(Num(n)))
+    new Button(n.toString(), (_: ClickEvent) => {
+      target match {
+        case Some(t) => t.handleCmd(Num(n))
+        case None =>
+      }
+    })
 
   g.setWidget(0, 0, padbutton(7))
   g.setWidget(0, 1, padbutton(8))
@@ -103,6 +120,7 @@ class Numpad(target: NumpadTarget) extends Composite {
   g.setWidget(3, 2, clear)
   initWidget(g)
 }
+
 
 class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite {
   val panel = new HorizontalPanel

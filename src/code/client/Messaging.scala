@@ -19,6 +19,6 @@ case class Num(n: Int) extends NumpadCmd
 case class Clear() extends NumpadCmd
 case class Enter() extends NumpadCmd
 
-trait NumpadTarget {
+trait NumpadHandler {
 	def handleCmd(cmd: NumpadCmd)
 }

@@ -9,9 +9,9 @@ import com.google.gwt.user.client.ui.RootPanel
 class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
-    val multApp = new MultiplicationApp    
+    val multApp = new MultiplicationApp(new AppView)   
     multApp.go(RootPanel.get("screen"))
-    val addApp = new AdditionApp    
+    val addApp = new AdditionApp(new AppView)   
     addApp.go(RootPanel.get("screen"))
   }
 
