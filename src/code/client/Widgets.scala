@@ -17,25 +17,35 @@ import com.google.gwt.dom.client.NativeEvent
 import com.google.gwt.event.dom.client.DomEvent
 import com.google.gwt.dom.client.Document
 import com.google.gwt.user.client.ui.SimplePanel
+import com.google.gwt.user.client.ui.HasWidgets
+import com.google.gwt.user.client.ui.Panel
 
 
-class AppView extends AppDisplay {
-  val screen = new SimplePanel
-  val widget = screen
+class AppView  {
+  val screen: HasWidgets = new SimplePanel
+  val widget:Widget = new SimplePanel //screen  
 }
 
 
+
+trait AnswerWidget {
+  def widget: Widget
+  val base: Panel
+}
+trait TextAnswerWidget extends AnswerWidget {
+  val answerField: TextBox
+}
 /**
  * CalcWidget contains the whole thing inside of it.
  */
 class CalcWidget(task: Op) 
-	extends Composite
-	with TaskDisplay
+	extends Composite with TextAnswerWidget
 	{
-  val base = new HorizontalPanel
+  val base: Panel = new HorizontalPanel
   val answerField = buildAnswerField()
   initWidget(base)
 
+  def widget = this
   val taskPanel = {
     val panel = new VerticalPanel
     panel.setStylePrimaryName("assignment")

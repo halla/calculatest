@@ -60,7 +60,7 @@ class CalculatestSpec extends SpecificationWithJUnit {
     "result in numpadcmd" in {
       val target = createMock(classOf[HasValue[String]])
       val appView = createMock(classOf[AppView])
-      val app = new AdditionApp(appView)
+      //val app = new AdditionApp(appView)
       //val numpad = createStrictMock(classOf[NumpadBridge]) //new NumpadBridge(target)
       0 must_== 1
     }

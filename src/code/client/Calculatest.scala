@@ -2,6 +2,8 @@ package code.client;
 
 import com.google.gwt.core.client.EntryPoint
 import com.google.gwt.user.client.ui.RootPanel
+import com.google.gwt.user.client.ui.SimplePanel
+import com.google.gwt.user.client.ui.FlowPanel
 
 /**
  * Entry point
@@ -9,14 +11,33 @@ import com.google.gwt.user.client.ui.RootPanel
 class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
-    val multApp = new MultiplicationApp(new AppView)   
-    multApp.go(RootPanel.get("screen"))
-    val addApp = new AdditionApp(new AppView)   
-    addApp.go(RootPanel.get("screen"))
+  //  val multApp = new MultiplicationApp(new AppView)   
+   // multApp.go(RootPanel.get("screen"))
+   // val addApp = new AdditionApp(new AppView)   
+    val addApp = new MyAddApp
+    addApp.app.go(RootPanel.get("screen"))
   }
 
 }
 
+class MyAddApp extends AppUiComponent
+	with AdditionAppComponent
+	with TaskComponent
+	with TaskUiComponent
+{
+  val app = new AdditionApp
+  val op = new Addition(2,2)
+  
+  var taskUi: TextAnswerWidget = new CalcWidget(op)
+
+  var task = new TaskPresenter(op) 
+  
+  val ui = new AppUi {   
+    val screen = new FlowPanel
+    val widget = screen 
+  }  
+  
+}
 
 object main {
   import MyMath._
