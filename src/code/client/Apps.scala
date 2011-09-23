@@ -52,8 +52,7 @@ trait MultiplicationAppComponent extends ResultRangeSelectorHandler
  */
 
 trait AdditionAppComponent extends AppComponent
-	with AppUiComponent	
-	
+	with AppUiComponent		
 	with TaskComponent
 	with TaskUiComponent	
 	{
@@ -86,12 +85,10 @@ trait AdditionAppComponent extends AppComponent
 }
 
 /**
- * Train addition by operand dimensions (count X stringlength)
+ * Train addition adding a constant to an integer.
  */
-
 trait AccumulatorAppComponent extends AppComponent
-	with AppUiComponent	
-	
+	with AppUiComponent		
 	with TaskComponent
 	with TaskUiComponent	
 	{

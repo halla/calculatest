@@ -170,4 +170,6 @@ class ConstantSelector(handler: IntSelectorHandler) extends Composite {
   
   def selectorButton(constant: Int): Widget = 
       new Button(constant.toString, (_: ClickEvent) => { handler.handleIntSelect(constant)})
+  
+  initWidget(panel)
 }
