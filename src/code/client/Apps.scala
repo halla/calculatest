@@ -74,7 +74,7 @@ trait AdditionAppComponent extends AppComponent
 	  }
 	  
 	  def setDimension(dimension: (Int, Int)) {
-	    tasks = genTasks(50, dimension)
+	    tasks = genTasks(100, dimension)
 	  }
 	  
 	  def handleDimensionSelect(dimension: (Int, Int)) {
@@ -109,7 +109,7 @@ trait AccumulatorAppComponent extends AppComponent
 	  }
 	  
 	  def setConstant(constant: Int) {
-	    tasks = genTasks(50, constant)
+	    tasks = genTasks(100, constant)
 	  }
 	  
 	  def handleIntSelect(int: Int) {
