@@ -12,9 +12,11 @@ class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
     val screen = RootPanel.get("screen")
+    
     (new MyMultiplicationApp).app.go(screen)
     (new MyAddApp).app.go(screen)
-    (new MyAccumulatorApp).app.go(screen)
+    (new MyAccumulatorApp).app.go(screen)    
+    (new MyEvenDivisionApp).app.go(screen)
   }
 
 }
@@ -43,16 +45,20 @@ class MyAddApp extends MyCalcApp
 }
 
 class MyMultiplicationApp extends MyCalcApp
-	with MultiplicationAppComponent
-{
+	with MultiplicationAppComponent {
   val app = new MultiplicationApp
 }
-
 
 class MyAccumulatorApp extends MyCalcApp with AccumulatorAppComponent {
   val app = new AccumulatorApp 
   
 }
+
+class MyEvenDivisionApp extends MyCalcApp
+	with EvenDivisionAppComponent {
+  val app = new EvenDivisionApp
+}
+
 
 object main {
   import MyMath._

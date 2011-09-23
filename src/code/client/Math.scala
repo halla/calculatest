@@ -63,6 +63,11 @@ class Multiplication(val left: Int, val right: Int) extends BinaryOp {
   def opString = "*"
 }
 
+class Division(val left: Int, val right: Int) extends BinaryOp {
+  def result = left / right 
+  def opString = "/"  
+}
+
 class Addition(val left: Int, val right: Int) extends BinaryOp {
   def result = left + right
   def opString = "+"

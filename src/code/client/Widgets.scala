@@ -144,7 +144,7 @@ class RangeSelector(handler: RangeSelectorHandler) extends Composite {
   ranges foreach (a => panel.add(selectorButton(a to a+50)))
 
   def selectorButton(range: Range): Widget =
-    new Button(range.start + "-" + range.end, (_: ClickEvent) => { handler.handleResultRangeSelect(range)})
+    new Button(range.start + "-" + range.end, (_: ClickEvent) => { handler.handleRangeSelect(range)})
 
   initWidget(panel)
 }

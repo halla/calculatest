@@ -38,7 +38,7 @@ trait MultiplicationAppComponent extends RangeSelectorHandler
     app.prepareNextTask()
   }
 
-  def handleResultRangeSelect(range: Range) = {
+  def handleRangeSelect(range: Range) = {
     setRange(range)
     app.next()
   }
@@ -114,6 +114,54 @@ trait AccumulatorAppComponent extends AppComponent
 	  
 	  def handleIntSelect(int: Int) {
 		  setConstant(int)
+	      app.next()
+	  }
+  }
+}
+
+
+/**
+ * Train addition adding a constant to an integer.
+ */
+trait EvenDivisionAppComponent extends AppComponent
+	with AppUiComponent		
+	with TaskComponent
+	with TaskUiComponent	
+	{
+  
+  class EvenDivisionApp extends Appl
+    with RangeSelectorHandler {	  
+	  var tasks: List[Op] = List(new Division(4,2))
+	  val dividendRangeSelector = new RangeSelector(this)  
+	  var range: List[Int] = (1 to 50).toList
+	  
+	  
+	  def go(container: HasWidgets) = {
+	    container.add(dividendRangeSelector)
+	    container.add(ui.widget)
+	    handleRangeSelect(1 to 50)
+	  }
+	  
+	  override def prepareNextTask() {
+	    val dividend = range.head
+	    val divisors = factorize(dividend)
+	    val newTasks = (divisors zip List.fill(divisors.length * 2)(dividend))
+	    val newOps: List[Op] = newTasks flatMap { a => List(new Division(a._2 ,a._1._1), new Division(a._2,a._1._2)) }  
+	    tasks = randomize(tasks ++ newOps) //randomize, otherwise results tend to group
+	    range = range.tail
+	    if (tasks == Nil) prepareNextTask()     
+	  }
+	  
+	  private def pairToBinop(pair: Pair[Int, Int]): BinaryOp = new Multiplication(pair._1, pair._2)
+	  
+	  def setRange(range: Range) { 
+	    this.range = randomize(range.toList)
+	    app.tasks = Nil
+	    app.prepareNextTask()
+	  }
+	  
+	  def handleRangeSelect(range: Range) {
+		  setRange(range)
 	      app.next()
 	  }
   }

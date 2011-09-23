@@ -7,7 +7,7 @@ trait AnswerHandler {
 }
 
 trait RangeSelectorHandler {
-  def handleResultRangeSelect(range: Range)
+  def handleRangeSelect(range: Range)
 }
 
 trait DimensionSelectorHandler {
