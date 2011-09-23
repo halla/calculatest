@@ -14,6 +14,10 @@ trait DimensionSelectorHandler {
   def handleDimensionSelect(dimension: (Int, Int))
 }
 
+trait IntSelectorHandler {
+  def handleIntSelect(int: Int)
+}
+
 sealed trait NumpadCmd
 case class Num(n: Int) extends NumpadCmd
 case class Clear() extends NumpadCmd

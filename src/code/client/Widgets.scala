@@ -162,3 +162,12 @@ class DimensionSelector(handler: DimensionSelectorHandler) extends Composite {
 
   initWidget(panel)
 }
+
+class ConstantSelector(handler: IntSelectorHandler) extends Composite {  
+  val panel = new HorizontalPanel
+  val constants = 2 to 27
+  constants.foreach (a => panel.add(selectorButton(a)))
+  
+  def selectorButton(constant: Int): Widget = 
+      new Button(constant.toString, (_: ClickEvent) => { handler.handleIntSelect(constant)})
+}
