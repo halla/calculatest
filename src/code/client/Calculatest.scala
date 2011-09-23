@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint
 import com.google.gwt.user.client.ui.RootPanel
 import com.google.gwt.user.client.ui.SimplePanel
 import com.google.gwt.user.client.ui.FlowPanel
+import com.google.gwt.user.client.ui.Label
 
 /**
  * Entry point
@@ -11,10 +12,9 @@ import com.google.gwt.user.client.ui.FlowPanel
 class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
-    val screen = RootPanel.get("screen")
-    
-    (new MyMultiplicationApp).app.go(screen)
-    (new MyAddApp).app.go(screen)
+    val screen = RootPanel.get("screen")  
+    (new MyMultiplicationApp).app.go(screen)    
+    (new MyAddApp).app.go(screen)    
     (new MyAccumulatorApp).app.go(screen)    
     (new MyEvenDivisionApp).app.go(screen)
   }
@@ -23,6 +23,7 @@ class Calculatest extends EntryPoint {
 
 abstract class MyCalcApp extends AppUiComponent  
 	with AppComponent
+	with AppConf[Any]
 	with TaskComponent
 	with TaskUiComponent {
 	
@@ -34,29 +35,35 @@ abstract class MyCalcApp extends AppUiComponent
 	
 	val ui = new AppUi {   
 		val screen = new FlowPanel
-				val widget = screen 
+		val widget = screen 
 	}
 	
 }
 
 class MyAddApp extends MyCalcApp
-	with AdditionAppComponent {
-  val app = new AdditionApp  
+	with AdditionAppComponent with AppConf[(Int, Int)] {
+  val app = new AdditionApp 
+  val confWidget = new DimensionSelector(app)
 }
 
 class MyMultiplicationApp extends MyCalcApp
-	with MultiplicationAppComponent {
+	with MultiplicationAppComponent with AppConf[Range] {
   val app = new MultiplicationApp
+  val confWidget = new RangeSelector(app)
 }
 
-class MyAccumulatorApp extends MyCalcApp with AccumulatorAppComponent {
+class MyAccumulatorApp extends MyCalcApp 
+	with AccumulatorAppComponent 
+	with AppConf[Int] {
   val app = new AccumulatorApp 
-  
+  val confWidget = new ConstantSelector(app)
 }
 
 class MyEvenDivisionApp extends MyCalcApp
-	with EvenDivisionAppComponent {
+	with EvenDivisionAppComponent 
+	with AppConf[Range] {
   val app = new EvenDivisionApp
+  val confWidget = new RangeSelector(app)
 }
 
 

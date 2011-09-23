@@ -14,6 +14,8 @@ import PimpMyGwt._
 import com.google.gwt.user.client.ui.Widget
 import com.google.gwt.user.client.ui.Panel
 import com.google.gwt.user.client.ui.Label
+import java.util.logging.Logger
+import java.util.logging.Level
 
 
 trait HasTasks {
@@ -31,22 +33,30 @@ trait AppUiComponent {
   }
 }
 
+trait AppConf[+C] {
+  val confWidget: Widget 
+}
 
 
 trait AppComponent {
-  self: AppUiComponent with TaskUiComponent with TaskComponent =>
+  self: AppUiComponent with TaskUiComponent with TaskComponent with AppConf[Any] =>
   val app: Appl
-  
+  //val logger = Logger.getLogger("NameOfYourLogger"); //TODO configure
+    
   trait Appl extends HasTasks {  	  
-	  var currentTask: Op = _
+	  var currentTask: Op = new Multiplication(2,2) //TODO defaults to late binding
 	  
-	  def go(container: HasWidgets)  
+	  def go(container: HasWidgets) {	    
+	    container.add(confWidget)	    
+	    container.add(ui.widget)		    
+	    next()
+	  }
 	  
 	  def next() {
 	    currentTask = tasks.head	    
-	    ui.screen.clear	   
-	    taskUi = new CalcWidget(currentTask)
-	    task = new TaskPresenter(currentTask)
+	    ui.screen.clear	   	    
+	    taskUi = new CalcWidget(currentTask)	    
+	    task = new TaskPresenter(currentTask)	    
 	    ui.screen.add(taskUi.widget)	    
 	    if (tasks != Nil) tasks = tasks.tail
 	    prepareNextTask()
