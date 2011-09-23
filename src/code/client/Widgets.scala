@@ -138,7 +138,7 @@ class Numpad extends Composite with NumpadDisplay {
 }
 
 
-class ResultRangeSelector(handler: ResultRangeSelectorHandler) extends Composite {
+class RangeSelector(handler: RangeSelectorHandler) extends Composite {
   val panel = new HorizontalPanel
   val ranges = new Range(1, 600, 50).toList
   ranges foreach (a => panel.add(selectorButton(a to a+50)))

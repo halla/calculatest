@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.HasWidgets
 /**
  * Train multiplications by result range.
  */
-trait MultiplicationAppComponent extends ResultRangeSelectorHandler  
+trait MultiplicationAppComponent extends RangeSelectorHandler  
   with AppUiComponent 
   with AppComponent 
   with TaskComponent
@@ -28,7 +28,7 @@ trait MultiplicationAppComponent extends ResultRangeSelectorHandler
 	  }
    
   }
-  val resultRangeSelector = new ResultRangeSelector(this)
+  val resultRangeSelector = new RangeSelector(this)
 
   var range: List[Int] = Nil
   

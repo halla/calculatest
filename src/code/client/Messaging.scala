@@ -6,7 +6,7 @@ trait AnswerHandler {
   def handleAnswer(question: Op, answer: Int)
 }
 
-trait ResultRangeSelectorHandler {
+trait RangeSelectorHandler {
   def handleResultRangeSelect(range: Range)
 }
 
