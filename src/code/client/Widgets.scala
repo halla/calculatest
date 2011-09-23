@@ -74,7 +74,13 @@ class CalcWidget(task: Op)
   def opWidget(op: Op) = {
     val panel = new VerticalPanel
     panel.setStylePrimaryName("opPanel")
-    op.operands.foreach(o => panel.add(new Label(o.toString)))    	
+    op match {  //TODO remove dependency
+      case m:Multiplication => {
+        panel.add(new Label(m.right.toString))
+        panel.add(new Label(m.left.toString))
+      }
+      case _ => op.operands.foreach(o => panel.add(new Label(o.toString)))    	        
+    }
 	val placeholder = new Label(" ")
 	placeholder.setStylePrimaryName("placeholder")
 	panel.add(placeholder)

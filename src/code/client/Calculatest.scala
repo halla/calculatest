@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.FlowPanel
 class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
-  //  val multApp = new MultiplicationApp(new AppView)   
-   // multApp.go(RootPanel.get("screen"))
+   val multApp = new MyMultiplicationApp   
+   multApp.app.go(RootPanel.get("screen"))
    // val addApp = new AdditionApp(new AppView)   
     val addApp = new MyAddApp
     addApp.app.go(RootPanel.get("screen"))
@@ -27,6 +27,25 @@ class MyAddApp extends AppUiComponent
 {
   val app = new AdditionApp
   val op = new Addition(2,2)
+  
+  var taskUi: TextAnswerWidget = new CalcWidget(op)
+
+  var task = new TaskPresenter(op) 
+  
+  val ui = new AppUi {   
+    val screen = new FlowPanel
+    val widget = screen 
+  }  
+  
+}
+
+class MyMultiplicationApp extends AppUiComponent
+	with MultiplicationAppComponent
+	with TaskComponent
+	with TaskUiComponent
+{
+  val app = new MultiplicationApp
+  val op = new Multiplication(2,2)
   
   var taskUi: TextAnswerWidget = new CalcWidget(op)
 

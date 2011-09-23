@@ -48,8 +48,7 @@ trait AppComponent {
 	    ui.screen.clear	   
 	    taskUi = new CalcWidget(currentTask)
 	    task = new TaskPresenter(currentTask)
-	    ui.screen.add(taskUi.widget)
-	    ui.screen.add(new Label("moi"))
+	    ui.screen.add(taskUi.widget)	    
 	    if (tasks != Nil) tasks = tasks.tail
 	    prepareNextTask()
 	  }  
@@ -103,43 +102,47 @@ trait TaskComponent {
 
 /**
  * Train multiplications by result range.
- *//*
-class MultiplicationApp(val view: AppDisplay) extends App	
-	with ResultRangeSelectorHandler {
-
+ */
+trait MultiplicationAppComponent extends ResultRangeSelectorHandler  
+  with AppUiComponent 
+  with AppComponent 
+  with TaskComponent
+  with TaskUiComponent
+  {
+  
+  class MultiplicationApp extends Appl {  
+    var tasks: List[Op] = Nil
+	  def go(container: HasWidgets) {
+	    container.add(resultRangeSelector)
+	    container.add(ui.widget)
+	    setRange(4 to 100)
+	    next()
+	  }
+	  override def prepareNextTask() {
+	    tasks = randomize(tasks ++ factorize(range.head).map(pairToBinop)) //randomize, otherwise results tend to group
+	    range = range.tail
+	    if (tasks == Nil) prepareNextTask()     
+	  }
+   
+  }
   val resultRangeSelector = new ResultRangeSelector(this)
 
   var range: List[Int] = Nil
-  var tasks: List[Op] = Nil
-  
-  
-  def go(container: HasWidgets) {
-    container.add(resultRangeSelector)
-    container.add(view.widget)
-    setRange(4 to 100)
-    next()
-  }
   
   def setRange(range: Range) { 
     this.range = randomize(range.toList)
-    this.tasks = Nil
-    prepareNextTask()
-  }
-  
-  override def prepareNextTask() {
-    tasks = randomize(tasks ++ factorize(range.head).map(pairToBinop)) //randomize, otherwise results tend to group
-    range = range.tail
-    if (tasks == Nil) prepareNextTask()     
+    app.tasks = Nil
+    app.prepareNextTask()
   }
 
   def handleResultRangeSelect(range: Range) = {
     setRange(range)
-    next()
+    app.next()
   }
 
   def pairToBinop(pair: Pair[Int, Int]): BinaryOp = new Multiplication(pair._1, pair._2)   
 
-}*/
+}
 
 /**
  * Train addition by operand dimensions (count X stringlength)
