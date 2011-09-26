@@ -54,15 +54,23 @@ class MyMultiplicationApp extends MyCalcApp
 }
 
 class MyConstantMultiplierApp extends MyCalcApp 
-	with ConstantMultiplierAppComponent 
+	with ConstantOpAppComponent 
 	with AppConf[Int] {
-  val app = new ConstantMultiplierApp 
+  val app = new ConstantOpApp {
+     def genTasks(n: Int, constant: Int): List[Op] = {	    
+	    List.fill(n)(new Multiplication(constant, util.Random.nextInt(100)))
+	  }
+  }
   val confWidget = new ConstantSelector(app)
 }
 class MyAccumulatorApp extends MyCalcApp 
-	with AccumulatorAppComponent 
+	with ConstantOpAppComponent 
 	with AppConf[Int] {
-  val app = new AccumulatorApp 
+  val app = new ConstantOpApp {
+    def genTasks(n: Int, constant: Int): List[Op] = {	    
+	  List.fill(n)(new Addition(util.Random.nextInt(100), constant))
+	}
+  }
   val confWidget = new ConstantSelector(app)
 }
 
