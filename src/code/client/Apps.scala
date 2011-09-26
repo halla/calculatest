@@ -79,6 +79,36 @@ trait AdditionAppComponent extends AppComponent
 }
 
 /**
+ * Multiplication by a constant.
+ * 
+ * TODO lots of duplication w constant addition.
+ */
+trait ConstantMultiplierAppComponent extends AppComponent
+	with AppUiComponent		
+	with TaskComponent
+	with TaskUiComponent
+	with AppConf[Int]
+	{
+  
+  class ConstantMultiplierApp extends Appl
+    with IntSelectorHandler {	  
+	  var tasks: List[Op] = genTasks(100, 2)
+  	  	 
+	  def genTasks(n: Int, constant: Int): List[Op] = {	    
+	    List.fill(n)(new Multiplication(constant, util.Random.nextInt(100)))
+	  }
+	  
+	  def setConstant(constant: Int) {
+	    tasks = genTasks(100, constant)
+	  }
+	  
+	  def handleIntSelect(int: Int) {
+		setConstant(int)
+	    next()
+	  }
+  }
+}
+/**
  * Train addition adding a constant to an integer.
  */
 trait AccumulatorAppComponent extends AppComponent
@@ -90,7 +120,7 @@ trait AccumulatorAppComponent extends AppComponent
   
   class AccumulatorApp extends Appl
     with IntSelectorHandler {	  
-	  var tasks: List[Op] = genTasks(50, 2)
+	  var tasks: List[Op] = genTasks(100, 2)
   	  	 
 	  def genTasks(n: Int, constant: Int): List[Op] = {	    
 	    List.fill(n)(new Addition(util.Random.nextInt(100), constant))

@@ -13,6 +13,7 @@ class Calculatest extends EntryPoint {
 
   def onModuleLoad() {
     val screen = RootPanel.get("screen")  
+    (new MyConstantMultiplierApp).app.go(screen)
     (new MyMultiplicationApp).app.go(screen)    
     (new MyAddApp).app.go(screen)    
     (new MyAccumulatorApp).app.go(screen)    
@@ -52,6 +53,12 @@ class MyMultiplicationApp extends MyCalcApp
   val confWidget = new RangeSelector(app)
 }
 
+class MyConstantMultiplierApp extends MyCalcApp 
+	with ConstantMultiplierAppComponent 
+	with AppConf[Int] {
+  val app = new ConstantMultiplierApp 
+  val confWidget = new ConstantSelector(app)
+}
 class MyAccumulatorApp extends MyCalcApp 
 	with AccumulatorAppComponent 
 	with AppConf[Int] {
