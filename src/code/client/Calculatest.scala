@@ -18,6 +18,7 @@ class Calculatest extends EntryPoint {
     (new MyAddApp).app.go(screen)    
     (new MyAccumulatorApp).app.go(screen)    
     (new MyEvenDivisionApp).app.go(screen)
+    (new MyPowerApp).app.go(screen)
   }
 
 }
@@ -69,6 +70,17 @@ class MyAccumulatorApp extends MyCalcApp
   val app = new ConstantOpApp {
     def genTasks(n: Int, constant: Int): List[Op] = {	    
 	  List.fill(n)(new Addition(util.Random.nextInt(100), constant))
+	}
+  }
+  val confWidget = new ConstantSelector(app)
+}
+
+class MyPowerApp extends MyCalcApp 
+	with ConstantOpAppComponent 
+	with AppConf[Int] {
+  val app = new ConstantOpApp {
+    def genTasks(n: Int, constant: Int): List[Op] = {
+      (1 to 32).toList map (a => new Multiplication(constant, Math.pow(constant, a).toInt))	  
 	}
   }
   val confWidget = new ConstantSelector(app)

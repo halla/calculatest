@@ -77,3 +77,8 @@ class AdditionList(val operands: List[Int]) extends ListOp {
   def opString = "+"
   def result = operands.foldLeft(0)(_+_)
 }
+
+class Power(val left: Int, val right: Int) extends BinaryOp {
+  def opString = "^"
+  def result = Math.pow(left, right).toInt
+}

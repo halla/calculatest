@@ -6,7 +6,7 @@ import java.util.logging.Level
 
 
 /**
- * Train multiplications by result range.
+ * Multiplications by result range.
  */
 trait MultiplicationAppComponent  
   extends AppUiComponent 
@@ -48,7 +48,7 @@ trait MultiplicationAppComponent
 }
 
 /**
- * Train addition by operand dimensions (count X stringlength)
+ * Addition by operand dimensions (count X stringlength)
  */
 
 trait AdditionAppComponent extends AppComponent
@@ -108,7 +108,7 @@ trait ConstantOpAppComponent extends AppComponent
 
 
 /**
- * Train addition adding a constant to an integer.
+ * Addition adding a constant to an integer.
  */
 trait EvenDivisionAppComponent extends AppComponent
 	with AppUiComponent		
